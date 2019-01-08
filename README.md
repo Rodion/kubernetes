@@ -1,2 +1,0 @@
-# kubernetes
-Kubernetes projects configuration
