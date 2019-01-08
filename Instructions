@@ -1,0 +1,81 @@
+++++++++++++++++++++++++
+Kubernetes install Instruction (Mac):
+++++++++++++++++++++++++
+Install Docker Desktop from:
+https://hub.docker.com/editions/community/docker-ce-desktop-mac
+Install Kubernetes Cluster. In the GUI Docker Desktop-->Preferences-->Enable Kubernetes 
+
+++++++++++++++++++++++++
+Deployment
+++++++++++++++++++++++++
+kubectl create -f comeandeatmysql.yml
+kubectl create -f comeandeat.yml
+kubectl create -f comeandeatdbservice.yml
+
+Check Status (Running):
+kubectl get all
+
+Forward port from kubernetes cluster: 
+kubectl port-forward deployment/comeandeat 8080:8080
+
+++++++++++++++++++++++++
+Check application
+++++++++++++++++++++++++
+Open browser:
+http://localhost:8080/graphiql
+
+
+mutation createFoodProviders{
+  foodProvider1: newFoodProvider (foodProviderName: "rest1", address: "Tel Aviv", contactName: "Moshe", contactNumber: "123123123", deliveryPrice: "NIS 10", workingHours: "9PM-9AM")
+  {
+    id
+  }
+  foodProvider2: newFoodProvider (foodProviderName: "rest2", address: "Tel Aviv", contactName: "Moshe", contactNumber: "123123123", deliveryPrice: "NIS 10", workingHours: "9PM-9AM")
+  {
+    id
+  }
+}
+ 
+Change Variables GUID to food_providers_id:
+{
+  "foodprovider1id": "17d612f2-bd99-4998-9f2f-171db7d2e5d4",
+  "foodprovider2id": "ba19c1dc-4f83-433e-8aec-52a0a213fccc"
+}
+
+mutation createMenu ($foodprovider1id: String!, $foodprovider2id: String!) {
+  menuItem1FP1: newMenuItem(foodproviderid: $foodprovider1id	description: "salad" price: "USD 20"
+  )
+  {
+    id
+  }
+
+  menuItem2FP1: newMenuItem(foodproviderid: $foodprovider1id	description: "salad" price: "USD 20"
+  )
+  {
+    id
+  }
+  
+  menuItem1FP2: newMenuItem(foodproviderid: $foodprovider2id	description: "salad" price: "USD 20"
+  )
+  {
+    id
+  }
+
+  menuItem2FP2: newMenuItem(foodproviderid: $foodprovider2id	description: "salad" price: "USD 20"
+  )
+  {
+    id
+  } 
+} 
+
+query ($foodprovider1id){
+  findAllFoodProvidersByAddress(address: "Tel Aviv") {
+    id
+    foodProviderName
+  }
+  findMenuByFoodProvider(foodProviderID: $foodprovider1id) {
+    id
+    description
+    price
+  }
+}
