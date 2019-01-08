@@ -1,4 +1,0 @@
-# Specify a base image
-FROM comeandeatdb
-WORKDIR /usr/tmp
-CMD "mysqld"
