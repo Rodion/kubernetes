@@ -68,7 +68,7 @@ mutation createMenu ($foodprovider1id: String!, $foodprovider2id: String!) {
   } 
 } 
 
-query ($foodprovider1id){
+query ($foodprovider1id: String!){
   findAllFoodProvidersByAddress(address: "Tel Aviv") {
     id
     foodProviderName
